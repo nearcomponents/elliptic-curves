@@ -84,8 +84,8 @@ checksum = "8d696c370c750c948ada61c69a0ee2cbbb9c50b1019ddb86d9317157a99c2cae"
 name = "bp256"
 version = "0.2.0"
 dependencies = [
- "ecdsa",
- "elliptic-curve",
+ "ecdsa 0.12.3",
+ "elliptic-curve 0.10.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2",
 ]
 
@@ -93,8 +93,8 @@ dependencies = [
 name = "bp384"
 version = "0.2.0"
 dependencies = [
- "ecdsa",
- "elliptic-curve",
+ "ecdsa 0.12.3",
+ "elliptic-curve 0.10.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2",
 ]
 
@@ -307,12 +307,23 @@ dependencies = [
 
 [[package]]
 name = "ecdsa"
+version = "0.12.1"
+source = "git+https://github.com/nearcomponents/signatures?rev=e054a2c#e054a2c7098948a508cd326c2c4afdfae2f13901"
+dependencies = [
+ "der",
+ "elliptic-curve 0.10.5 (git+https://github.com/nearcomponents/traits?rev=f6c1d86)",
+ "hmac",
+ "signature",
+]
+
+[[package]]
+name = "ecdsa"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "713c32426287891008edb98f8b5c6abb2130aa043c93a818728fcda78606f274"
 dependencies = [
  "der",
- "elliptic-curve",
+ "elliptic-curve 0.10.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "hmac",
  "signature",
 ]
@@ -331,9 +342,28 @@ checksum = "069397e10739989e400628cbc0556a817a8a64119d7a2315767f4456e1332c23"
 dependencies = [
  "base64ct",
  "crypto-bigint",
- "ff",
+ "ff 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "generic-array",
- "group",
+ "group 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "hex-literal",
+ "pkcs8",
+ "rand_core",
+ "serde",
+ "serde_json",
+ "subtle",
+ "zeroize",
+]
+
+[[package]]
+name = "elliptic-curve"
+version = "0.10.5"
+source = "git+https://github.com/nearcomponents/traits?rev=f6c1d86#f6c1d86e8f2a20c72ce6684bf098e430100b7f76"
+dependencies = [
+ "base64ct",
+ "crypto-bigint",
+ "ff 0.10.0 (git+https://github.com/nearcomponents/ff?rev=ed510df)",
+ "generic-array",
+ "group 0.10.0 (git+https://github.com/nearcomponents/group?rev=e0a36d5)",
  "hex-literal",
  "pkcs8",
  "rand_core",
@@ -351,6 +381,15 @@ checksum = "63eec06c61e487eecf0f7e6e6372e596a81922c28d33e645d6983ca6493a1af0"
 dependencies = [
  "bitvec",
  "rand_core",
+ "subtle",
+]
+
+[[package]]
+name = "ff"
+version = "0.10.0"
+source = "git+https://github.com/nearcomponents/ff?rev=ed510df#ed510dfb4f37c821d784a50a706049c4f48da447"
+dependencies = [
+ "bitvec",
  "subtle",
 ]
 
@@ -393,8 +432,17 @@ version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1c363a5301b8f153d80747126a04b3c82073b9fe3130571a9d170cacdeaf7912"
 dependencies = [
- "ff",
+ "ff 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand_core",
+ "subtle",
+]
+
+[[package]]
+name = "group"
+version = "0.10.0"
+source = "git+https://github.com/nearcomponents/group?rev=e0a36d5#e0a36d55088394913d7db40e6e24a178a17efbef"
+dependencies = [
+ "ff 0.10.0 (git+https://github.com/nearcomponents/ff?rev=ed510df)",
  "subtle",
 ]
 
@@ -469,8 +517,8 @@ dependencies = [
  "blobby",
  "cfg-if",
  "criterion",
- "ecdsa",
- "elliptic-curve",
+ "ecdsa 0.12.1",
+ "elliptic-curve 0.10.5 (git+https://github.com/nearcomponents/traits?rev=f6c1d86)",
  "hex-literal",
  "num-bigint",
  "num-traits",
@@ -579,8 +627,8 @@ name = "p256"
 version = "0.9.0"
 dependencies = [
  "blobby",
- "ecdsa",
- "elliptic-curve",
+ "ecdsa 0.12.3",
+ "elliptic-curve 0.10.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "hex-literal",
  "proptest",
  "rand_core",
@@ -591,8 +639,8 @@ dependencies = [
 name = "p384"
 version = "0.8.0"
 dependencies = [
- "ecdsa",
- "elliptic-curve",
+ "ecdsa 0.12.3",
+ "elliptic-curve 0.10.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2",
 ]
 

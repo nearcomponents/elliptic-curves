@@ -11,18 +11,26 @@ use ecdsa_core::{
     rfc6979,
     signature::{
         digest::{BlockInput, FixedOutput, Reset, Update},
-        DigestSigner, RandomizedDigestSigner,
+        DigestSigner,
     },
 };
 use elliptic_curve::{
     consts::U32,
     ops::Invert,
-    rand_core::{CryptoRng, RngCore},
     subtle::{Choice, ConstantTimeEq},
 };
 
+#[cfg(feature = "rand_core")]
+use ecdsa_core::RandomizedDigestSigner;
+#[cfg(feature = "rand_core")]
+use elliptic_curve::rand_core::{CryptoRng, RngCore};
+
 #[cfg(any(feature = "keccak256", feature = "sha256"))]
-use ecdsa_core::signature::{self, digest::Digest, PrehashSignature, RandomizedSigner};
+use ecdsa_core::signature::{self, digest::Digest, PrehashSignature};
+
+#[cfg(feature = "rand_core")]
+#[cfg(any(feature = "keccak256", feature = "sha256"))]
+use ecdsa_core::signature::RandomizedSigner;
 
 #[cfg(feature = "pkcs8")]
 use crate::pkcs8::{self, FromPrivateKey};
@@ -39,6 +47,7 @@ pub struct SigningKey {
 }
 
 impl SigningKey {
+    #[cfg(feature = "rand_core")]
     /// Generate a cryptographically random [`SigningKey`].
     pub fn random(rng: impl CryptoRng + RngCore) -> Self {
         Self {
@@ -85,6 +94,7 @@ where
     }
 }
 
+#[cfg(feature = "rand_core")]
 #[cfg(any(feature = "keccak256", feature = "sha256"))]
 impl<S> RandomizedSigner<S> for SigningKey
 where
@@ -121,6 +131,7 @@ where
     }
 }
 
+#[cfg(feature = "rand_core")]
 impl<D> RandomizedDigestSigner<D, Signature> for SigningKey
 where
     D: BlockInput + FixedOutput<OutputSize = U32> + Clone + Default + Reset + Update,
@@ -135,6 +146,7 @@ where
     }
 }
 
+#[cfg(feature = "rand_core")]
 impl<D> RandomizedDigestSigner<D, recoverable::Signature> for SigningKey
 where
     D: BlockInput + FixedOutput<OutputSize = U32> + Clone + Default + Reset + Update,

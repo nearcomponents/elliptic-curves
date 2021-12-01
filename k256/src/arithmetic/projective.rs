@@ -12,11 +12,13 @@ use elliptic_curve::{
         prime::{PrimeCurve, PrimeCurveAffine, PrimeGroup},
         Curve, Group, GroupEncoding,
     },
-    rand_core::RngCore,
     sec1::{FromEncodedPoint, ToEncodedPoint},
     subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption},
     ProjectiveArithmetic,
 };
+
+#[cfg(feature = "rand_core")]
+use elliptic_curve::rand_core::RngCore;
 
 #[rustfmt::skip]
 const ENDOMORPHISM_BETA: FieldElement = FieldElement::from_bytes_unchecked(&[
@@ -267,6 +269,7 @@ impl ProjectivePoint {
 impl Group for ProjectivePoint {
     type Scalar = Scalar;
 
+    #[cfg(feature = "rand_core")]
     fn random(mut rng: impl RngCore) -> Self {
         Self::generator() * Scalar::random(&mut rng)
     }

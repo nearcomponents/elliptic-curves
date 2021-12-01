@@ -25,10 +25,12 @@ use core::ops::{Add, AddAssign, Mul, MulAssign, Neg, Shr, Sub, SubAssign};
 use elliptic_curve::{
     generic_array::arr,
     group::ff::{Field, PrimeField},
-    rand_core::{CryptoRng, RngCore},
     subtle::{Choice, ConditionallySelectable, ConstantTimeEq, CtOption},
     ScalarArithmetic,
 };
+
+#[cfg(feature = "rand_core")]
+use elliptic_curve::rand_core::{CryptoRng, RngCore};
 
 #[cfg(feature = "bits")]
 use {crate::ScalarBits, elliptic_curve::group::ff::PrimeFieldBits};
@@ -74,6 +76,7 @@ impl ScalarArithmetic for Secp256k1 {
 pub struct Scalar(ScalarImpl);
 
 impl Field for Scalar {
+    #[cfg(feature = "rand_core")]
     fn random(rng: impl RngCore) -> Self {
         // Uses rejection sampling as the default random generation method,
         // which produces a uniformly random distribution of scalars.
@@ -329,6 +332,7 @@ impl Scalar {
         Self::one().negate().to_biguint().unwrap() + 1.to_biguint().unwrap()
     }
 
+    #[cfg(feature = "rand_core")]
     /// Returns a (nearly) uniformly-random scalar, generated in constant time.
     pub fn generate_biased(mut rng: impl CryptoRng + RngCore) -> Self {
         // We reduce a random 512-bit value into a 256-bit field, which results in a
@@ -338,6 +342,7 @@ impl Scalar {
         Scalar(WideScalarImpl::from_bytes(&buf).reduce())
     }
 
+    #[cfg(feature = "rand_core")]
     /// Returns a uniformly-random scalar, generated using rejection sampling.
     // TODO(tarcieri): make this a `CryptoRng` when `ff` allows it
     pub fn generate_vartime(mut rng: impl RngCore) -> Self {
